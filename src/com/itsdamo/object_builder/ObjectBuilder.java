@@ -24,7 +24,7 @@ public class ObjectBuilder<T> {
         return this;
     }
 
-    public T get() {
+    public T build() {
         return instance;
     }
 }

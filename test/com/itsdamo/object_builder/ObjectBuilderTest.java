@@ -17,45 +17,48 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class ObjectBuilderTest {
 
-    private class DomainModel {
-        private int id;
-        private Object object;
+    private class Animal {
+        private int legCount;
+        private String name;
 
-        public int getId() {
-            return id;
+        public int getLegCount() {
+            return legCount;
         }
 
-        public Object getObject() {
-            return object;
+        public String getName() {
+            return name;
         }
     }
 
-    private DomainModel instanceToUpdate;
-    private ObjectBuilder<DomainModel> objectBuilder;
-    private DomainModel updatedInstance;
-
-    @Before
-    public void setUp() {
-        instanceToUpdate = new DomainModel();
-        objectBuilder = new ObjectBuilder<DomainModel>(instanceToUpdate);
+    private class AnimalBuilder extends ObjectBuilder<Animal> {
+        public AnimalBuilder(Animal instance) {
+            super(instance);
+        }
     }
+
+    private AnimalBuilder animalBuilder;
 
     @Test
-    public void get_shouldReturnTheInstance() {
-        updatedInstance = objectBuilder.get();
-        assertEquals(instanceToUpdate, updatedInstance);
+    public void build_shouldReturnTheInstance() {
+        Animal animal = new Animal();
+        animalBuilder = new AnimalBuilder(animal);
+
+        assertEquals(animal, animalBuilder.build());
     }
 
     @Test
     public void with_shouldSetAPrivateObjectProperty() throws Exception {
-        Object expectedObject = "Hello!";
-        updatedInstance = objectBuilder.with("object", expectedObject).get();
-        assertEquals(expectedObject, updatedInstance.getObject());
+        animalBuilder = new AnimalBuilder(new Animal());
+
+        Animal builtAnimal = animalBuilder.with("name", "Rodolf").build();
+        assertEquals("Rodolf", builtAnimal.getName());
     }
 
     @Test
     public void with_shouldSetAPrivateIntProperty() throws Exception {
-        updatedInstance = objectBuilder.with("id", 32).get();
-        assertEquals(32, updatedInstance.getId());
+        animalBuilder = new AnimalBuilder(new Animal());
+
+        Animal builtAnimal = animalBuilder.with("legCount", 8).build();
+        assertEquals(8, builtAnimal.getLegCount());
     }
 }
