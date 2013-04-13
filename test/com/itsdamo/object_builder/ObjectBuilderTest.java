@@ -30,6 +30,10 @@ public class ObjectBuilderTest {
         }
     }
 
+    private class Dog extends Animal {
+        private boolean likesBarking;
+    }
+
     private class AnimalBuilder extends ObjectBuilder<Animal> {
         public AnimalBuilder(Animal instance) {
             super(instance);
@@ -60,5 +64,13 @@ public class ObjectBuilderTest {
 
         Animal builtAnimal = animalBuilder.with("legCount", 8).build();
         assertEquals(8, builtAnimal.getLegCount());
+    }
+
+    @Test
+    public void with_shouldSetAnInheritedProperty() throws Exception {
+        animalBuilder = new AnimalBuilder(new Dog());
+
+        Dog builtDog = (Dog) animalBuilder.with("legCount", 4).build();
+        assertEquals(4, builtDog.getLegCount());
     }
 }

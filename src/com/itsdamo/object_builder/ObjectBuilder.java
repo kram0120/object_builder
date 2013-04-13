@@ -17,7 +17,18 @@ public class ObjectBuilder<T> {
     }
 
     public ObjectBuilder<T> with(String fieldName, Object fieldValue) throws NoSuchFieldException, IllegalAccessException {
-        Field field = instance.getClass().getDeclaredField(fieldName);
+        Field field = null;
+        Class objectClass = instance.getClass();
+
+        while (field == null) {
+            try {
+                field = objectClass.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                objectClass = objectClass.getSuperclass();
+                if (objectClass == null) throw e;
+            }
+        }
+
         field.setAccessible(true);
         field.set(instance, fieldValue);
 
