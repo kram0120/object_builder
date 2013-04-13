@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,11 +33,22 @@ public class ObjectBuilderTest {
 
     private class Dog extends Animal {
         private boolean likesBarking;
+
+        public boolean getLikesBarking() {
+            return likesBarking;
+        }
     }
 
     private class AnimalBuilder extends ObjectBuilder<Animal> {
         public AnimalBuilder(Animal instance) {
             super(instance);
+        }
+    }
+
+    private class DogBuilder extends ObjectBuilder<Dog> {
+        public DogBuilder(Dog instance) {
+            super(instance);
+            setDefault("likesBarking", true);
         }
     }
 
@@ -72,5 +84,20 @@ public class ObjectBuilderTest {
 
         Dog builtDog = (Dog) animalBuilder.with("legCount", 4).build();
         assertEquals(4, builtDog.getLegCount());
+    }
+
+    @Test
+    public void build_shouldApplyDefaults() throws Exception {
+        Dog dog = new DogBuilder(new Dog()).build();
+        assertEquals(true, dog.getLikesBarking());
+    }
+
+    @Test
+    public void build_shouldAllowOverridingDefaults() throws Exception {
+        Dog dog = new DogBuilder(new Dog())
+                .with("likesBarking", false)
+                .build();
+
+        assertEquals(false, dog.getLikesBarking());
     }
 }

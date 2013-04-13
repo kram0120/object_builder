@@ -35,6 +35,14 @@ public class ObjectBuilder<T> {
         return this;
     }
 
+    public void setDefault(String fieldName, Object fieldValue) {
+        try {
+            with(fieldName, fieldValue);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public T build() {
         return instance;
     }
