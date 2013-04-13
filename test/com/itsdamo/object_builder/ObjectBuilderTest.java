@@ -1,11 +1,9 @@
-package com.itsdamo.object_creator;
+package com.itsdamo.object_builder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  * To change this template use File | Settings | File Templates.
  */
 @RunWith(JUnit4.class)
-public class ObjectCreatorTest {
+public class ObjectBuilderTest {
 
     private class DomainModel {
         private int id;
@@ -33,31 +31,31 @@ public class ObjectCreatorTest {
     }
 
     private DomainModel instanceToUpdate;
-    private ObjectCreator<DomainModel> objectCreator;
+    private ObjectBuilder<DomainModel> objectBuilder;
     private DomainModel updatedInstance;
 
     @Before
     public void setUp() {
         instanceToUpdate = new DomainModel();
-        objectCreator = new ObjectCreator<DomainModel>(instanceToUpdate);
+        objectBuilder = new ObjectBuilder<DomainModel>(instanceToUpdate);
     }
 
     @Test
     public void get_shouldReturnTheInstance() {
-        updatedInstance = objectCreator.get();
+        updatedInstance = objectBuilder.get();
         assertEquals(instanceToUpdate, updatedInstance);
     }
 
     @Test
     public void with_shouldSetAPrivateObjectProperty() throws Exception {
         Object expectedObject = "Hello!";
-        updatedInstance = objectCreator.with("object", expectedObject).get();
+        updatedInstance = objectBuilder.with("object", expectedObject).get();
         assertEquals(expectedObject, updatedInstance.getObject());
     }
 
     @Test
     public void with_shouldSetAPrivateIntProperty() throws Exception {
-        updatedInstance = objectCreator.with("id", 32).get();
+        updatedInstance = objectBuilder.with("id", 32).get();
         assertEquals(32, updatedInstance.getId());
     }
 }

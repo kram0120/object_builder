@@ -1,4 +1,4 @@
-package com.itsdamo.object_creator;
+package com.itsdamo.object_builder;
 
 import java.lang.reflect.Field;
 
@@ -9,14 +9,14 @@ import java.lang.reflect.Field;
  * Time: 18:06
  * To change this template use File | Settings | File Templates.
  */
-public class ObjectCreator<T> {
+public class ObjectBuilder<T> {
     private T instance;
 
-    public ObjectCreator(T instance) {
+    public ObjectBuilder(T instance) {
         this.instance = instance;
     }
 
-    public ObjectCreator<T> with(String fieldName, Object fieldValue) throws NoSuchFieldException, IllegalAccessException {
+    public ObjectBuilder<T> with(String fieldName, Object fieldValue) throws NoSuchFieldException, IllegalAccessException {
         Field field = instance.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
         field.set(instance, fieldValue);

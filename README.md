@@ -1,4 +1,4 @@
-# Object Creator
+# Object Builder
 
 A simple object builder for Java application testing
 
@@ -23,7 +23,7 @@ private class DomainModel {
 You can instantiate it using the following:
 ```
 DomainModel testModel =
-  new ObjectCreator<DomainModel>(new DomainModel())
+  new ObjectBuilder<DomainModel>(new DomainModel())
     .with("id", 33)
     .with("object", "Hello World!")
     .get();
